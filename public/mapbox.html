@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GeoJSON from live realtime data</title>
+    <meta charset=utf-8 />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+    <link href='css/menu.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+    <div id='map'>
+        <nav class='menu-ui'>
+          <a id='previous'>Previous</a><a id='play' class="active">Play</a><a id='pause'>Pause</a><a id='next'>Next</a><a id='forward'>Forward</a>
+        </nav>
+    </div>
+    <script>
+        var delay = 400
+
+        L.mapbox.accessToken = 'pk.eyJ1IjoienJ6cHp0bWEiLCJhIjoiY2lteGVvemw2MDBkMXY5bTE2azRpYmFtOCJ9.uGlCDBBbhGNRjIykZX4xmw';
+        var map = L.mapbox.map('map', 'mapbox.streets')
+            .setView([38, -102.0], 2);
+
+        // As with any other AJAX request, this technique is subject to the Same Origin Policy:
+        var featureLayer = L.mapbox.featureLayer()
+            .loadURL('/features/next') // Once this layer loads, we set a timer to load it again in a few seconds.
+            .on('ready', run)
+            .addTo(map);
+
+        function run() {
+            <!--featureLayer.eachLayer(function(l) {-->
+                <!--map.panTo(l.getLatLng());-->
+            <!--});-->
+            document.timeoutHandle = window.setTimeout(function() {
+                featureLayer.loadURL('/features/next');
+            }, delay);
+        }
+
+        function pause() {
+            featureLayer.off('ready', run);
+            if (typeof document.timeoutHandle != 'undefined') {
+                window.clearTimeout(document.timeoutHandle);
+            }
+            delete document.timeoutHandle
+        }
+
+        function play() {
+            if (typeof document.timeoutHandle == 'undefined') {
+                featureLayer
+                    .on('ready', run)
+                    .loadURL('/features/next');
+            }
+        }
+
+        document.getElementById('play').onclick = function() {
+            delay = 400
+            toggle("play")
+            play()
+        }
+        document.getElementById('pause').onclick = function() {
+            toggle("pause")
+            pause()
+        }
+        document.getElementById('previous').onclick = function() {
+            toggle("pause")
+            pause()
+            featureLayer.loadURL('/features/previous');
+        }
+        document.getElementById('next').onclick = function() {
+            toggle("pause")
+            pause()
+            featureLayer.loadURL('/features/next');
+        }
+        document.getElementById('forward').onclick = function() {
+            toggle("forward")
+            delay = 100
+            play()
+        }
+
+        function toggle(elementName) {
+            toggleOff(document.getElementById('previous'))
+            toggleOff(document.getElementById('play'))
+            toggleOff(document.getElementById('pause'))
+            toggleOff(document.getElementById('next'))
+            toggleOff(document.getElementById('forward'))
+            toggleOn(document.getElementById(elementName))
+        }
+
+        function toggleOn(element){
+            if (!element){
+                return;
+            }
+            var classString = element.className, nameIndex = classString.indexOf("active");
+            if (nameIndex == -1) {
+                classString += ' ' + "active";
+            }
+            element.className = classString;
+        }
+
+        function toggleOff(element){
+            if (!element){
+                return;
+            }
+            var classString = element.className, nameIndex = classString.indexOf("active");
+            if (nameIndex != -1) {
+                classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + "active".length);
+                element.className = classString;
+            }
+        }
+    </script>
+</body>
+</html>

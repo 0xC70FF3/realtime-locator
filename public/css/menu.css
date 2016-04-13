@@ -1,0 +1,87 @@
+.menu-ui {
+	position:absolute;
+	top:10px;right:10px;
+	z-index:1;
+	color: transparent;
+	cursor: pointer;
+}
+
+.menu-ui a {
+	background-color: white;
+	background-repeat: no-repeat;
+    background-position: center;
+	border:1px solid rgba(0,0,0,0.5);
+	border-right: none;
+	border-left: 1px solid rgba(0,0,0,0.1);
+	color: transparent;
+	height: 30px;
+	width: 32px;
+	font-size: 13px;
+	display: inline-block;
+	margin:0;
+	padding:0;
+}
+
+.menu-ui a:first-child {
+	border-left: 1px solid rgba(0,0,0,0.5);
+  	border-radius:3px 0 0 3px;
+}
+
+.menu-ui a:last-child {
+  border-right:1px solid rgba(0,0,0,0.5);
+  border-radius:0 3px 3px 0;
+}
+
+.menu-ui a:hover {
+	color: transparent;
+}
+.menu-ui a.active {
+	background-color: rgb(230,230,230);
+	color: transparent;
+}
+
+.menu-ui a.active:hover {
+	color: transparent;
+}
+
+.menu-ui a#play {
+	background-image: url(../img/control_play.png);
+}
+
+.menu-ui a#pause {
+	background-image: url(../img/control_pause.png);
+}
+
+.menu-ui a#previous {
+	background-image: url(../img/control_start.png);
+}
+
+.menu-ui a#next {
+	background-image: url(../img/control_end.png);
+}
+
+.menu-ui a#forward {
+	background-image: url(../img/control_fastforward.png);
+}
+
+.menu-ui a#play:hover {
+	background-image: url(../img/control_play_blue.png);
+}
+
+.menu-ui a#pause:hover {
+	background-image: url(../img/control_pause_blue.png);
+}
+
+.menu-ui a#previous:hover {
+	background-image: url(../img/control_start_blue.png);
+}
+
+.menu-ui a#next:hover {
+	background-image: url(../img/control_end_blue.png);
+}
+
+.menu-ui a#forward:hover {
+	background-image: url(../img/control_fastforward_blue.png);
+}
+
+
