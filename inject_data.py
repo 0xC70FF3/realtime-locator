@@ -10,7 +10,7 @@ def callback(*args):
 
 if __name__ == "__main__":
 
-    with SocketIO('dev.local', 3000, LoggingNamespace) as socketIO:
+    with SocketIO('192.168.99.100', 3000, LoggingNamespace) as socketIO:
         for i in range(0, 12):
             lon = random.uniform(-180, 180)
             lat = random.uniform(-90, 90)
